@@ -1,0 +1,33 @@
+install.packages("rvest")
+install.packages("xml2")
+
+library(rvest)
+
+# Specify the URL of the Wikipedia page
+url <- "https://en.wikipedia.org/wiki/Lists_of_hospitals_in_Europe"
+
+# Read the HTML content of the page
+page <- read_html(url)
+
+# Extract the tables containing the hospitals
+tables <- html_nodes(page, "table.wikitable")
+
+# Initialize an empty list to store the hospital dataframes
+hospital_data <- list()
+
+# Iterate through each table and extract the data
+for (i in 1:length(tables)) {
+  # Extract the table as a dataframe
+  table_df <- html_table(tables[i], header = TRUE)[[1]]
+  
+  # Clean up the table
+  table_df <- table_df[-1, ]  # Remove the first row (header)
+  
+  # Add the table dataframe to the list
+  hospital_data[[i]] <- table_df
+}
+
+# Print the extracted hospital dataframes
+for (i in 1:length(hospital_data)) {
+  print(hospital_data[[i]])
+}
