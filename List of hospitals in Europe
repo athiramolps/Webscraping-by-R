@@ -27,7 +27,8 @@ for (i in 1:length(tables)) {
   hospital_data[[i]] <- table_df
 }
 
-# Print the extracted hospital dataframes
-for (i in 1:length(hospital_data)) {
-  print(hospital_data[[i]])
-}
+# Combine all dataframes into a single dataframe
+combined_df <- do.call(rbind, hospital_data)
+
+# Save the combined dataframe as a CSV file
+write.csv(combined_df, "hospital_data.csv", row.names = FALSE)
